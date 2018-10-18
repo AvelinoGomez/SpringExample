@@ -24,34 +24,20 @@ public class ProdutoController {
 	@Autowired
 	ProdutoRepository produtoRepository;
 		
-	@GetMapping("/listar")
-	public Produto listarProdutos(){
+	@GetMapping
+	public List<Produto> listarProdutos(){
 		
-		return produtoRepository.findAll().get(0);
+		return produtoRepository.findAll();
 		
 	}
 	
-	@GetMapping("/listar/{codigo}")
+	@GetMapping("/{codigo}")
 	public Produto listarProdutoPorCodigo(@PathVariable String codigo) {
 		
 		return produtoRepository.findOne(codigo);
 		
 	}
-	
-	@PostMapping("/adicionar")
-	public ResponseEntity<Produto> adicionarProduto(@RequestBody Produto produto){
-		
-		Produto produtoExistente = produtoRepository.findOne(produto.getCodigo());
-		
-		if(produtoExistente!=null) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		}else {
-			return ResponseEntity.ok(produtoRepository.save(produto));
-		}
-		
-	}
-
-	@PutMapping("/alterar")
+	@PutMapping
 	public ResponseEntity<Produto> alterarProduto(@RequestBody Produto produto){
 		
 		Produto produtoExistente = produtoRepository.findOne(produto.getCodigo());
@@ -64,7 +50,7 @@ public class ProdutoController {
 		
 	}
 	
-	@PostMapping("/inserir")
+	@PostMapping
 	public ResponseEntity<Produto> inserirProduto(@RequestBody Produto produto){
 		
 		if(produtoRepository.findOne(produto.getCodigo()) == null)
@@ -74,7 +60,7 @@ public class ProdutoController {
 		
 	}
 	
-	@DeleteMapping("/remover")
+	@DeleteMapping
 	public ResponseEntity<Produto> deletarProduto(@RequestBody String codigo){
 		
 		Produto produtoNovo = produtoRepository.findOne(codigo);
@@ -88,17 +74,7 @@ public class ProdutoController {
 		}
 	}
 	
-	@PutMapping("/atualizar")
-	public ResponseEntity<Produto> atualizarProduto(@RequestBody Produto produto){
-		
-		Produto produtoBuscado = produtoRepository.findOne(produto.getCodigo());
-		
-		if(produtoBuscado != null) {
-			return ResponseEntity.ok(produtoRepository.save(produto));
-		}else {
-			return ResponseEntity.notFound().build();
-		}
-	}
+	
 	
 	
 }
